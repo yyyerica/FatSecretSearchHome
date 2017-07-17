@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity {
-    OkHttpClient client = new OkHttpClient();  //新建客户端
+    //OkHttpClient client = new OkHttpClient();  //新建客户端
     JSONObject obj;
     JSONArray jsonArray = null;
     @Override
@@ -19,13 +19,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        //api访问
+        /**
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //Log.e("object",FatSecretGet.getFood((long)4889).toString());
                 Log.e("search",FatSecretSearch.searchFood("rice",0).toString());
-                //obj = JSONObject.fromObject(FatSecretSearch.searchFood("banana",0));
                 try {
                     jsonArray = new JSONArray(FatSecretSearch.searchFood("rice",0).toString());
                     for (int i = 0; i < 1;i++) {
@@ -39,11 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
-
-
-
-
-
+        */
     }
 
 
