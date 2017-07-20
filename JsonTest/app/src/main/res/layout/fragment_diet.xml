@@ -1,15 +1,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:android_custom="http://schemas.android.com/apk/res/com.example.yyy.jsontest"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:layout_height="match_parent">->
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="营养成分"
+                android:layout_gravity="left"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我的早餐"
+                    android:layout_gravity="left|center_vertical"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp"/>
+
+                <Button
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="end"
+                    android:id="@+id/detailsButton"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="597.00千卡"
+                android:layout_gravity="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="50sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -17,34 +50,135 @@
                 android:orientation="horizontal"
                 android:padding="10dp">
 
-                <com.example.yyy.jsontest.RoundProgressBar
+                <com.example.yyy.jsontest.ProgressBar.RoundProgressBar
                     android:id="@+id/roundProgressBar1"
                     android:layout_width="140dp"
                     android:layout_height="140dp"
-                    android_custom:roundWidth="20dp"
-                    android_custom:textSize="18sp"
+                    android_custom:roundWidth="15dp"
+                    android_custom:textSize="13sp"
                     android:layout_weight="1"
-                    android:layout_margin="5dp"/>
+                    android:layout_margin="5dp"
+                    android_custom:text="蛋白质"/>
 
 
-                <com.example.yyy.jsontest.RoundProgressBar
+                <com.example.yyy.jsontest.ProgressBar.RoundProgressBar2
                     android:id="@+id/roundProgressBar2"
                     android:layout_width="140dp"
                     android:layout_height="140dp"
-                    android_custom:roundWidth="20dp"
-                    android_custom:textSize="18sp"
+                    android_custom:roundWidth="15dp"
+                    android_custom:textSize="13sp"
                     android:layout_weight="1"
-                    android:layout_margin="5dp"/>
+                    android:layout_margin="5dp"
+                    android_custom:text="脂肪"/>
 
-                <com.example.yyy.jsontest.RoundProgressBar
+                <com.example.yyy.jsontest.ProgressBar.RoundProgressBar3
                     android:id="@+id/roundProgressBar3"
                     android:layout_width="140dp"
                     android:layout_height="140dp"
-                    android_custom:roundWidth="20dp"
-                    android_custom:textSize="18sp"
+                    android_custom:roundWidth="15dp"
+                    android_custom:textSize="13sp"
                     android:layout_weight="1"
-                    android:layout_margin="5dp"/>
+                    android:layout_margin="5dp"
+                    android_custom:text="碳水化合物"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="营养元素"
+                        android:layout_weight="7"
+                        android:textColor="#a6a6a6"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="含量"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_weight="3"
+                        android:textColor="#a6a6a6"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="热量"
+                        android:layout_weight="7"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="597.00 kCal"
+                        android:gravity="center"
+                        android:layout_weight="3"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="蛋白质"
+                        android:layout_weight="7"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0g"
+                        android:gravity="center"
+                        android:layout_weight="3"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="3dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="脂肪"
+                        android:layout_weight="7"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0g"
+                        android:gravity="center"
+                        android:layout_weight="3"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="3dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="碳水化合物"
+                        android:layout_weight="7"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0g"
+                        android:gravity="center"
+                        android:layout_weight="3"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
 </LinearLayout>

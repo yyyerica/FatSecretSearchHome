@@ -1,26 +1,29 @@
 package com.example.yyy.jsontest;
 
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
+
 import android.os.Bundle;
 
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
+
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
+import com.example.yyy.jsontest.ProgressBar.RoundProgressBar;
+import com.example.yyy.jsontest.ProgressBar.RoundProgressBar2;
+import com.example.yyy.jsontest.ProgressBar.RoundProgressBar3;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
@@ -28,7 +31,9 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 public class DietFragment extends Fragment {
 
-    private RoundProgressBar mRoundProgressBar1,mRoundProgressBar2,mRoundProgressBar3;
+    private RoundProgressBar mRoundProgressBar1;
+    private RoundProgressBar2 mRoundProgressBar2;
+    private RoundProgressBar3 mRoundProgressBar3;
     private int progress1 = 0 , progress2 = 0, progress3 = 0;
 
     final int PHOTO_REQUEST_GALLERY = 23;
@@ -38,60 +43,31 @@ public class DietFragment extends Fragment {
 
     int carbohydrate = 0,fat = 0,protein = 0;
 
-    public DietFragment() {
-        // Required empty public constructor
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
+    Button detailBu;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         ll = (LinearLayout)inflater.inflate(R.layout.fragment_diet, container, false);
-        initFAB(); //浮动按钮
+        init();
 
         initProgressRing(53,23,42);//圆环
-        //new GetNetWork().execute();
 
-        // Inflate the layout for this fragment
+        initFAB(); //浮动按钮
+
         return ll;
     }
 
-
-    // 回调方法，从第二个页面回来的时候会执行这个方法
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PHOTO_REQUEST_GALLERY) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-
-            //ImageView imageView = (ImageView) getActivity().findViewById(R.id.imgView);
-            //imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-        } else if(requestCode == CAMERA_REQUEST) {
-
-            Bundle bundle = data.getExtras();
-            Bitmap bitmap = (Bitmap) bundle.get("data");
-            //img_show.setImageBitmap(bitmap);
-
-        }
+    void init() {
+        detailBu = (Button)ll.findViewById(R.id.detailsButton);
+        detailBu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),FoodDetailActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     //浮动按钮
@@ -176,12 +152,36 @@ public class DietFragment extends Fragment {
             }
         });
     }
+    // 回调方法，从第二个页面回来的时候会执行这个方法
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PHOTO_REQUEST_GALLERY) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
+            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            //ImageView imageView = (ImageView) getActivity().findViewById(R.id.imgView);
+            //imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+        } else if(requestCode == CAMERA_REQUEST) {
+
+            Bundle bundle = data.getExtras();
+            Bitmap bitmap = (Bitmap) bundle.get("data");
+            //img_show.setImageBitmap(bitmap);
+
+        }
+    }
     //圆环
     void initProgressRing(int carbohydrate1,int fat1,int protein1) {
         mRoundProgressBar1 = (RoundProgressBar) ll.findViewById(R.id.roundProgressBar1);
-        mRoundProgressBar2 = (RoundProgressBar) ll.findViewById(R.id.roundProgressBar2);
-        mRoundProgressBar3 = (RoundProgressBar) ll.findViewById(R.id.roundProgressBar3);
+        mRoundProgressBar2 = (RoundProgressBar2) ll.findViewById(R.id.roundProgressBar2);
+        mRoundProgressBar3 = (RoundProgressBar3) ll.findViewById(R.id.roundProgressBar3);
 
         carbohydrate = carbohydrate1;
         fat = fat1;
@@ -196,7 +196,7 @@ public class DietFragment extends Fragment {
                     mRoundProgressBar1.setProgress(progress1);
 
                     try {
-                        Thread.sleep(30);
+                        Thread.sleep(50);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

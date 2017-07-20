@@ -1,4 +1,4 @@
-package com.example.yyy.jsontest;
+package com.example.yyy.jsontest.ProgressBar;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,6 +10,8 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+
+import com.example.yyy.jsontest.R;
 
 public class RoundProgressBar extends View {
 
@@ -32,6 +34,8 @@ public class RoundProgressBar extends View {
 	private boolean textIsDisplayable;
 
 	private int style;
+
+	private String text;
 	
 	public static final int STROKE = 0;
 	public static final int FILL = 1;
@@ -61,7 +65,7 @@ public class RoundProgressBar extends View {
 		max = mTypedArray.getInteger(R.styleable.RoundProgressBar_max, 100);
 		textIsDisplayable = mTypedArray.getBoolean(R.styleable.RoundProgressBar_textIsDisplayable, true);
 		style = mTypedArray.getInt(R.styleable.RoundProgressBar_style, 0);
-		
+		text = mTypedArray.getString(R.styleable.RoundProgressBar_text);
 		mTypedArray.recycle();
 	}
 	
@@ -85,10 +89,13 @@ public class RoundProgressBar extends View {
 		paint.setTextSize(textSize);
 		paint.setTypeface(Typeface.DEFAULT_BOLD);
 		int percent = (int)(((float)progress / (float)max) * 100);
-		float textWidth = paint.measureText(percent + "%");
+//		float textWidth1 = paint.measureText(text);
+		float textWidth1 = paint.measureText("蛋白质");
+		float textWidth2 = paint.measureText(percent + "%");
 		
 		if(textIsDisplayable && percent != 0 && style == STROKE){
-			canvas.drawText(percent + "%", centre - textWidth / 2, centre + textSize/2, paint);
+			canvas.drawText(text , centre - textWidth1 / 2, centre - textSize/2, paint);
+			canvas.drawText(percent + "%", centre - textWidth2 / 2, centre + textSize, paint);
 		}
 		
 		
