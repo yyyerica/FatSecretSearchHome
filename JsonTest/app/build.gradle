@@ -28,9 +28,12 @@ dependencies {
     compile files('libs/okhttp-3.8.1.jar')
     compile files('libs/okio-1.13.0.jar')
 
+    //seekbar
+
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha5'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
+    compile 'com.xw.repo:bubbleseekbar:3.5-lite'
     testCompile 'junit:junit:4.12'
 }

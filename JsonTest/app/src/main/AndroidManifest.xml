@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".EditFoodActivity" />
-        <activity android:name=".FoodDetailActivity"/>
+        <activity android:name=".FoodDetailActivity" />
+        <activity android:name=".AddCanFoodActivity"></activity>
     </application>
 
 </manifest>
