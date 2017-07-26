@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.yyy.jsontest.AddCanFoodActivity"
-    android:orientation="vertical">
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--tools:context="com.example.yyy.jsontest.AddCanFoodActivity"-->
+    <!--android:orientation="vertical">-->
 
-    <Button
-        android:id="@+id/addButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+    <!--<Button-->
+        <!--android:id="@+id/addButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="right"/>-->
 
-    <ListView
+    <!--<ListView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/foodlistview"-->
+        <!--android:listSelector="@android:color/transparent"-->
+        <!--android:dividerHeight="0.7dip"-->
+        <!--android:choiceMode="none"-->
+        <!--android:divider="#d7d7d7"-->
+        <!--android:orientation="vertical"/>-->
+
+    <ExpandableListView
+        android:id="@+id/expandablelistview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/foodlistview"/>
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:groupIndicator="@null"/>
 
-
-</LinearLayout>
+<!--</LinearLayout>-->

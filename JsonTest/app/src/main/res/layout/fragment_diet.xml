@@ -16,25 +16,36 @@
                 android:textColor="@color/colorAccent"
                 android:textSize="20sp"/>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="我的早餐"
                     android:layout_gravity="left|center_vertical"
+                    android:text="我的早餐"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp" />
 
                 <Button
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="end"
                     android:id="@+id/detailsButton"
-                    android:layout_alignParentEnd="true" />
-            </RelativeLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:text="食物详情" />
+
+                <Button
+                    android:id="@+id/AdddDelButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:text="（拍照后）增删界面" />
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"

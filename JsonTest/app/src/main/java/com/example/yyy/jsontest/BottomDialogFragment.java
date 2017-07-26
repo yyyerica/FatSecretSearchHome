@@ -33,6 +33,8 @@ public class BottomDialogFragment extends DialogFragment {
 
     double calo,cal;
 
+
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 

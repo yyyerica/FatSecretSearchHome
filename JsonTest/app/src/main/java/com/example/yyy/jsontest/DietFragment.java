@@ -5,21 +5,24 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 
 import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 
 import android.os.Bundle;
 
+import android.os.Environment;
 import android.provider.MediaStore;
 
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.yyy.jsontest.ProgressBar.RoundProgressBar;
 import com.example.yyy.jsontest.ProgressBar.RoundProgressBar2;
@@ -27,6 +30,9 @@ import com.example.yyy.jsontest.ProgressBar.RoundProgressBar3;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class DietFragment extends Fragment {
@@ -38,12 +44,16 @@ public class DietFragment extends Fragment {
 
     final int PHOTO_REQUEST_GALLERY = 23;
     final int CAMERA_REQUEST = 343;
+    public static final String PICTURE_FILE="temp.jpg";
 
     LinearLayout ll;
 
     int carbohydrate = 0,fat = 0,protein = 0;
 
     Button detailBu;
+
+    private int screenWidth = 0;
+    private int screenHeight = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +78,19 @@ public class DietFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        Button addbu = (Button)ll.findViewById(R.id.AdddDelButton);
+        addbu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),AddDelFoodActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 获取屏幕大小
+        screenWidth = getResources().getDisplayMetrics().widthPixels;
+        screenHeight = getResources().getDisplayMetrics().heightPixels;
     }
 
     //浮动按钮
@@ -126,7 +149,7 @@ public class DietFragment extends Fragment {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),EditFoodActivity.class);
+                Intent intent = new Intent(getActivity(),SearchFoodActivity.class);
                 startActivity(intent);
             }
         });
@@ -135,10 +158,8 @@ public class DietFragment extends Fragment {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 激活系统图库，选择一张图片
                 Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_GALLERY
+                intent.setType("image/*");//相片类型
                 startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
             }
         });
@@ -147,36 +168,149 @@ public class DietFragment extends Fragment {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(it,CAMERA_REQUEST);
+                String state = Environment.getExternalStorageState();
+                if (state.equals(Environment.MEDIA_MOUNTED)) {
+                    Intent getImageByCamera = new Intent("android.media.action.IMAGE_CAPTURE");
+                    Uri imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),PICTURE_FILE));
+                    getImageByCamera.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    // 这样每次调用相机拍照都会在sd卡根目录生成名为temp.jpg的图片，每次拍照都会覆盖旧的文件。这样的话就不能通过onActivityResult方法的intent参数获取照片数据，可以直接读取文件
+                    // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CAREMA
+                    startActivityForResult(getImageByCamera, CAMERA_REQUEST);
+                }
+                else {
+                    Toast.makeText(getActivity(), "请确认已经插入SD卡", Toast.LENGTH_LONG).show();
+                }
             }
         });
+
+        actionButton.setOnTouchListener(onDragTouchListener);//拖动
     }
+
+    View.OnTouchListener onDragTouchListener = new View.OnTouchListener() {
+        private float startX = 0;
+        private float startY = 0;
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN: {
+                    startX = event.getRawX();
+                    startY = event.getRawY();
+                    break;
+                }
+                case MotionEvent.ACTION_MOVE: {
+
+                    // 计算偏移量
+                    int dx = (int) (event.getRawX() - startX);
+                    int dy = (int) (event.getRawY() - startY);
+
+                    // 计算控件的区域
+                    int left = v.getLeft() + dx;
+                    int right = v.getRight() + dx;
+                    int top = v.getTop() + dy;
+                    int bottom = v.getBottom() + dy;
+
+                    // 超出屏幕检测
+                    if (left < 0) {
+                        left = 0;
+                        right = v.getWidth();
+                    }
+
+                    if (right > screenWidth) {
+                        right = screenWidth;
+                        left = screenWidth - v.getWidth();
+                    }
+
+                    if (top < 0) {
+                        top = 0;
+                        bottom = v.getHeight();
+                    }
+
+                    if (bottom > screenHeight) {
+                        bottom = screenHeight;
+                        top = screenHeight - v.getHeight();
+                    }
+
+                    v.layout(left, top, right, bottom);
+
+                    startX = event.getRawX();
+                    startY = event.getRawY();
+
+                    break;
+                }
+            }
+            return false;
+        }
+    };
+
     // 回调方法，从第二个页面回来的时候会执行这个方法
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PHOTO_REQUEST_GALLERY) {
+            //打开相册并选择照片，这个方式选择单张
+// 获取返回的数据，这里是android自定义的Uri地址
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
+// 获取选择照片的数据视图
             Cursor cursor = getActivity().getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
             cursor.moveToFirst();
-
+// 从数据视图中获取已选择图片的路径
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            //ImageView imageView = (ImageView) getActivity().findViewById(R.id.imgView);
-            //imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            manageimage(picturePath);
         } else if(requestCode == CAMERA_REQUEST) {
-
-            Bundle bundle = data.getExtras();
-            Bitmap bitmap = (Bitmap) bundle.get("data");
-            //img_show.setImageBitmap(bitmap);
+            File f = new File(Environment.getExternalStorageDirectory()
+                    + "/" + PICTURE_FILE);
+            String filePath = f.getPath();
+            manageimage(filePath);
 
         }
     }
+
+    //调正照片角度
+    void manageimage(String filePath) {
+        //根据图片的filepath获取到一个ExifInterface的对象
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            exif = null;
+        }
+        //获取图片的方向角度：
+        int degree=0;
+        if (exif != null) {
+            // 读取图片中相机方向信息
+            int ori = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_UNDEFINED);
+            // 计算旋转角度
+            switch (ori) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    degree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    degree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    degree = 270;
+                    break;
+                default:
+                    degree = 0;
+                    break;
+            }
+        }
+        Bundle bundle = new Bundle();
+        bundle.putString("path",filePath);
+        bundle.putInt("degree",degree);
+        Intent intent = new Intent(getActivity(),Main2Activity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+
     //圆环
     void initProgressRing(int carbohydrate1,int fat1,int protein1) {
         mRoundProgressBar1 = (RoundProgressBar) ll.findViewById(R.id.roundProgressBar1);
