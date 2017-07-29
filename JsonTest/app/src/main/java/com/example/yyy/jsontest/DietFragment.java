@@ -2,7 +2,6 @@ package com.example.yyy.jsontest;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
@@ -15,13 +14,12 @@ import android.provider.MediaStore;
 
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.yyy.jsontest.ProgressBar.RoundProgressBar;
@@ -46,7 +44,7 @@ public class DietFragment extends Fragment {
     final int CAMERA_REQUEST = 343;
     public static final String PICTURE_FILE="temp.jpg";
 
-    LinearLayout ll;
+    RelativeLayout ll;
 
     int carbohydrate = 0,fat = 0,protein = 0;
 
@@ -59,7 +57,7 @@ public class DietFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        ll = (LinearLayout)inflater.inflate(R.layout.fragment_diet, container, false);
+        ll = (RelativeLayout)inflater.inflate(R.layout.fragment_diet, container, false);
         init();
 
         initProgressRing(53,23,42);//圆环
@@ -79,14 +77,14 @@ public class DietFragment extends Fragment {
             }
         });
 
-        Button addbu = (Button)ll.findViewById(R.id.AdddDelButton);
-        addbu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),AddDelFoodActivity.class);
-                startActivity(intent);
-            }
-        });
+//        Button addbu = (Button)ll.findViewById(R.id.AdddDelButton);
+//        addbu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getActivity(),AddDelFoodActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         // 获取屏幕大小
         screenWidth = getResources().getDisplayMetrics().widthPixels;
@@ -102,8 +100,11 @@ public class DietFragment extends Fragment {
 
         FloatingActionButton actionButton = new FloatingActionButton.Builder(getActivity())
                 .setContentView(icon)
-                .setPosition(3) //位置
+                .setPosition(4) //位置
                 .build();
+
+        //((FloatingActionButton.LayoutParams) actionButton.getLayoutParams()).setMargins(0, 400, 30, 0);//偏移
+
         SubActionButton.Builder itemBuilder = new SubActionButton.Builder(getActivity());
 
         //子按钮大小
@@ -140,8 +141,8 @@ public class DietFragment extends Fragment {
                 .addSubActionView(button1)
                 .addSubActionView(button2)
                 .addSubActionView(button3)
-                .setStartAngle(120)
-                .setEndAngle(240)
+//                .setStartAngle(120)
+//                .setEndAngle(240)
                 .attachTo(actionButton)
                 .build();
 
@@ -183,65 +184,65 @@ public class DietFragment extends Fragment {
             }
         });
 
-        actionButton.setOnTouchListener(onDragTouchListener);//拖动
+        //actionButton.setOnTouchListener(onDragTouchListener);//拖动
     }
 
-    View.OnTouchListener onDragTouchListener = new View.OnTouchListener() {
-        private float startX = 0;
-        private float startY = 0;
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN: {
-                    startX = event.getRawX();
-                    startY = event.getRawY();
-                    break;
-                }
-                case MotionEvent.ACTION_MOVE: {
-
-                    // 计算偏移量
-                    int dx = (int) (event.getRawX() - startX);
-                    int dy = (int) (event.getRawY() - startY);
-
-                    // 计算控件的区域
-                    int left = v.getLeft() + dx;
-                    int right = v.getRight() + dx;
-                    int top = v.getTop() + dy;
-                    int bottom = v.getBottom() + dy;
-
-                    // 超出屏幕检测
-                    if (left < 0) {
-                        left = 0;
-                        right = v.getWidth();
-                    }
-
-                    if (right > screenWidth) {
-                        right = screenWidth;
-                        left = screenWidth - v.getWidth();
-                    }
-
-                    if (top < 0) {
-                        top = 0;
-                        bottom = v.getHeight();
-                    }
-
-                    if (bottom > screenHeight) {
-                        bottom = screenHeight;
-                        top = screenHeight - v.getHeight();
-                    }
-
-                    v.layout(left, top, right, bottom);
-
-                    startX = event.getRawX();
-                    startY = event.getRawY();
-
-                    break;
-                }
-            }
-            return false;
-        }
-    };
+//    View.OnTouchListener onDragTouchListener = new View.OnTouchListener() {
+//        private float startX = 0;
+//        private float startY = 0;
+//
+//        @Override
+//        public boolean onTouch(View v, MotionEvent event) {
+//            switch (event.getAction()) {
+//                case MotionEvent.ACTION_DOWN: {
+//                    startX = event.getRawX();
+//                    startY = event.getRawY();
+//                    break;
+//                }
+//                case MotionEvent.ACTION_MOVE: {
+//
+//                    // 计算偏移量
+//                    int dx = (int) (event.getRawX() - startX);
+//                    int dy = (int) (event.getRawY() - startY);
+//
+//                    // 计算控件的区域
+//                    int left = v.getLeft() + dx;
+//                    int right = v.getRight() + dx;
+//                    int top = v.getTop() + dy;
+//                    int bottom = v.getBottom() + dy;
+//
+//                    // 超出屏幕检测
+//                    if (left < 0) {
+//                        left = 0;
+//                        right = v.getWidth();
+//                    }
+//
+//                    if (right > screenWidth) {
+//                        right = screenWidth;
+//                        left = screenWidth - v.getWidth();
+//                    }
+//
+//                    if (top < 0) {
+//                        top = 0;
+//                        bottom = v.getHeight();
+//                    }
+//
+//                    if (bottom > screenHeight) {
+//                        bottom = screenHeight;
+//                        top = screenHeight - v.getHeight();
+//                    }
+//
+//                    v.layout(left, top, right, bottom);
+//
+//                    startX = event.getRawX();
+//                    startY = event.getRawY();
+//
+//                    break;
+//                }
+//            }
+//            return false;
+//        }
+//    };
 
     // 回调方法，从第二个页面回来的时候会执行这个方法
     @Override
@@ -305,7 +306,7 @@ public class DietFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString("path",filePath);
         bundle.putInt("degree",degree);
-        Intent intent = new Intent(getActivity(),Main2Activity.class);
+        Intent intent = new Intent(getActivity(),ShowPicActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -330,7 +331,7 @@ public class DietFragment extends Fragment {
                     mRoundProgressBar1.setProgress(progress1);
 
                     try {
-                        Thread.sleep(50);
+                        Thread.sleep(30);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

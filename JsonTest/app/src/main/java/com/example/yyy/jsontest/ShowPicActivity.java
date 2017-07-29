@@ -1,6 +1,7 @@
 package com.example.yyy.jsontest;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -8,6 +9,7 @@ import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,20 +18,22 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.io.Serializable;
+import java.util.ArrayList;
 
-public class Main2Activity extends AppCompatActivity {
+public class ShowPicActivity extends AppCompatActivity {
     Bundle bundle;
     Bitmap bitmap;
-    ImageView drawImage;
-    Button button;
+
+    ImageView imageView;
+    Button postbutton,affirmButton;
     ProgressBar mProgressBar;
+    FrameLayout picframeLayout;
+
+    //TagView tagView;
+    ArrayList<Food> preList,postList;
+    ArrayList<TagView> viewlist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,12 +42,14 @@ public class Main2Activity extends AppCompatActivity {
 //         <activity android:name=".Main2Activity"
 //        android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_showpic);
 
-        drawImage = (ImageView)findViewById(R.id.drawpicImageView);
-        ImageView imageView = (ImageView) findViewById(R.id.imageView1);
+
+        picframeLayout = (FrameLayout) findViewById(R.id.frameLayout);
+        imageView = (ImageView) findViewById(R.id.imageView1);
         bundle = getIntent().getExtras();
-        button = (Button)findViewById(R.id.postButton);
+        postbutton = (Button)findViewById(R.id.postButton);
+        affirmButton = (Button)findViewById(R.id.affirmButton);
         mProgressBar = (ProgressBar)findViewById(R.id.processBar);
 
         if (bundle != null) {
@@ -58,37 +64,48 @@ public class Main2Activity extends AppCompatActivity {
                     bitmap = BitmapFactory.decodeFile(path);
                     bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
                             bitmap.getHeight(), m, true);
-                } else  {
+                } else {
                     bitmap = BitmapFactory.decodeFile(path);
                 }
                 imageView.setImageBitmap(bitmap);
-
             }
 
-            button.setOnClickListener(new View.OnClickListener() {
+            postbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new GetNetWork().execute();   ////向服务器发送图片
+                    new GetNetWork().execute();   //向服务器发送图片
+                }
+            });
+
+            affirmButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    postList.clear();
+                    for (int i = 0 ; i < viewlist.size() ; i++) {
+                        if(viewlist.get(i).isShown()) {
+                            postList.add(preList.get(i));
+                        }
+                    }
+                    Intent intent = new Intent(ShowPicActivity.this,AddDelFoodActivity.class);
+                    intent.putExtra("postlist",postList);
+                    startActivity(intent);
                 }
             });
         }
     }
-    /*
-     * 设置控件所在的位置XY，并且不改变宽高，
-     * XY为绝对位置
-     */
-    public static void setLayout(View view, int x, int y)
+
+/*
+* 设置控件所在的位置YY，并且不改变宽高，
+* XY为绝对位置
+*/
+    public static void setLayout(View view,int x,int y)
     {
         ViewGroup.MarginLayoutParams margin=new ViewGroup.MarginLayoutParams(view.getLayoutParams());
-        margin.setMargins(x,y, x+margin.width, y+margin.height);
+//        margin.setMargins(x,y, x+margin.width, y+margin.height);
+        margin.setMargins(x,y, 0, 0);//cnmlgb
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(margin);
         view.setLayoutParams(layoutParams);
     }
-
-    void showprocess(int value) {
-        Toast.makeText(this,"update",Toast.LENGTH_LONG);
-    }
-
 
     //内部类
     //向服务器发送图片  http://blog.csdn.net/guolin_blog/article/details/11711405
@@ -99,6 +116,13 @@ public class Main2Activity extends AppCompatActivity {
             super.onPreExecute();
             //开始前的准备工作
             mProgressBar.setVisibility(View.VISIBLE);
+            preList = new ArrayList<>();
+            postList = new ArrayList<>();
+            viewlist = new ArrayList<>();
+            preList.add(new Food("foodnameDemo0",1,2,3,4,"desstring0"));
+            preList.add(new Food("foodnameDemo1",1,2,3,4,"desstring1"));
+            preList.add(new Food("foodnameDemo2",1,2,3,4,"desstring2"));
+            preList.add(new Food("foodnameDemo3",1,2,3,4,"desstring3"));
         }
 
         @Override
@@ -123,7 +147,7 @@ public class Main2Activity extends AppCompatActivity {
 //                e.printStackTrace();
 //            }
             try {
-                Thread.sleep(3000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -139,23 +163,19 @@ public class Main2Activity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             mProgressBar.setVisibility(View.GONE);
-            //mImageView.setImageBitmap(bitmap);
-            Log.e("result",result);
-            setLayout(drawImage,180,150);
-            drawImage.setVisibility(View.VISIBLE);
-        }
+            postbutton.setVisibility(View.GONE);
+            TagView.LayoutParams tagparams = new TagView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            for(int i = 0 ; i < preList.size(); i++) {
+                TagView tagView = new TagView(ShowPicActivity.this, preList.get(i));
+                viewlist.add(tagView);//用以确认键作判断
 
+                picframeLayout.addView(tagView,tagparams);
+                int[] location = new  int[2] ;//获得当前图片的位置（左上角）
+                imageView.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
+                setLayout(tagView,location[0]+i*300,location[1]+i*300);
 
-        /**
-         * 这里的Intege参数对应AsyncTask中的第二个参数
-         * 在doInBackground方法当中，，每次调用publishProgress方法都会触发onProgressUpdate执行
-         * onProgressUpdate是在UI线程中执行，所有可以对UI空间进行操作
-         */
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            int vlaue = values[0];
-            //progressBar.setProgress(vlaue);
-            showprocess(vlaue);
+            }
+            affirmButton.setVisibility(View.VISIBLE);
         }
     }
 }

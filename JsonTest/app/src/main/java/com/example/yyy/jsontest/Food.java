@@ -1,8 +1,12 @@
 package com.example.yyy.jsontest;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,7 +14,7 @@ import java.util.regex.Pattern;
  * Created by YYY on 2017/7/22.
  */
 
-public class Food {
+public class Food implements Serializable {
     //"food_description":"Per 100g - Calories: 89kcal | Fat: 0.33g | Carbs: 22.84g | Protein: 1.09g""food_name":"Bananas"
     String Name;//Bananas
     int heat;   //89
@@ -99,5 +103,4 @@ public class Food {
         int after=Integer.valueOf(m.replaceAll("").trim());
         return after;
     }
-
 }

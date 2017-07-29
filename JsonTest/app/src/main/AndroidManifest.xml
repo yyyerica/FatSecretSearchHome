@@ -25,7 +25,7 @@
         <activity android:name=".SearchFoodActivity" />
         <activity android:name=".FoodDetailActivity" />
         <activity android:name=".AddDelFoodActivity"/>
-        <activity android:name=".Main2Activity"
+        <activity android:name=".ShowPicActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     </application>

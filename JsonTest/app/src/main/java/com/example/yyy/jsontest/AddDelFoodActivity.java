@@ -34,18 +34,14 @@ public class AddDelFoodActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_can_food);
 
-        init();//初始化食物列表信息
+        Foodlist = (ArrayList<Food>)getIntent().getSerializableExtra("postlist");
+
 
         //获取控件
         sp_date_list = (ExpandableListView) findViewById(R.id.expandablelistview);
         sp_date_list.setAdapter(new MyExpandAdapter(this,Foodlist));
     }
 
-    public void init() {//食物列表demo
-        Foodlist = new ArrayList<Food>();
-        Foodlist.add(new Food("apple",10,1,1,1,"AppleDes"));
-        Foodlist.add(new Food("banana",20,2,2,2,"BananaDes"));
-    }
 
     public void delete(int position) {
         Foodlist.remove(position);

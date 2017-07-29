@@ -35,5 +35,6 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
     compile 'com.xw.repo:bubbleseekbar:3.5-lite'
+    //compile 'com.github.imangazalievm:circlemenu:1.0.3'
     testCompile 'junit:junit:4.12'
 }
