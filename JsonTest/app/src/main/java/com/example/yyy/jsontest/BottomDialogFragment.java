@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.xw.repo.BubbleSeekBar;
 
@@ -32,8 +31,6 @@ public class BottomDialogFragment extends DialogFragment {
     String foodname,description;
 
     double calo,cal;
-
-
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -71,7 +68,7 @@ public class BottomDialogFragment extends DialogFragment {
     void init() {
         Button addbutton = (Button) view.findViewById(R.id.addButton);
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinner1);
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinner1);//下拉按钮
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                                 getActivity(), R.array.meal, R.layout.spinnerlayout);//自定义字体
         adapter.setDropDownViewResource(R.layout.spinnerlayout);//自定义字体，拉开后

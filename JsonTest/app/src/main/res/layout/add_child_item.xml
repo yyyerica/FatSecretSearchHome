@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -14,5 +14,25 @@
         android:paddingBottom="6px"
         android:textSize="25sp"
         android:text="DefaultText"/>
+
+    <com.xw.repo.BubbleSeekBar
+        android:id="@+id/seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        app:bsb_bubble_color="#f9a8a8"
+        app:bsb_bubble_text_color="@color/colorPrimaryDark"
+        app:bsb_max="0"
+        app:bsb_min="300"
+        app:bsb_progress="100"
+        app:bsb_second_track_color="#f62727"
+        app:bsb_section_count="5"
+        app:bsb_section_text_position="bottom_sides"
+        app:bsb_show_progress_in_float="false"
+        app:bsb_show_section_mark="true"
+        app:bsb_show_section_text="true"
+        app:bsb_show_thumb_text="true"
+        app:bsb_track_color="#f9a8a8"/>
 
 </LinearLayout>

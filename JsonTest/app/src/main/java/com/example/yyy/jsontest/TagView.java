@@ -60,7 +60,7 @@ public class TagView extends FrameLayout {
         builder.setIcon(R.mipmap.ic_launcher);
         builder.setTitle("lalala")
                 .setPositiveButton("删除",
-                        new DialogInterface.OnClickListener(){
+                        new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialoginterface, int i) {
                                 setVisibility(GONE);
                             }

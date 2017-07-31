@@ -21,6 +21,7 @@ public class Food implements Serializable {
     int fat;    //0.33
     int protein;//1.09
     int carbs;  //22.84
+    int amount; //g
     String description;// Fat: 0.33g | Carbs: 22.84g | Protein: 1.09g
 
     public Food(String Name,int heat,int fat,int protein,int carbs,String description) {
@@ -94,6 +95,14 @@ public class Food implements Serializable {
 
     public void setdescription(String description) {
         this.description = description;
+    }
+
+    public void setamount(int amount) {
+        this.amount = amount;
+    }
+
+    public int getamount() {
+        return amount;
     }
 
     public static int getNumber(String text) {
