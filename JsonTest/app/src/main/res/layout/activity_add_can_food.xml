@@ -1,35 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!--<Button-->
-        <!--android:id="@+id/addButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="right"/>-->
-
-    <!--<ListView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/foodlistview"-->
-        <!--android:listSelector="@android:color/transparent"-->
-        <!--android:dividerHeight="0.7dip"-->
-        <!--android:choiceMode="none"-->
-        <!--android:divider="#d7d7d7"-->
-        <!--android:orientation="vertical"/>-->
-    <Button
-        android:id="@+id/confirmButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <ExpandableListView
-        android:id="@+id/expandablelistview"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:groupIndicator="@null"/>
+        android:orientation="vertical"
+        android:id="@+id/relativelayout">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:text="我的一餐"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:background="#ecf6f4"
+            android:id="@+id/textview"/>
 
+        <ExpandableListView
+            android:id="@+id/expandablelistview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:groupIndicator="@null"
+            android:childDivider="#00f0f0f0" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:layout_marginTop="850dp"
+            android:layout_gravity="right"
+            android:src="@drawable/addfab"
+            android:id="@+id/fab"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/confirmButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_margin="20dp"
+        android:layout_alignParentBottom="true"
+        android:text="确认"
+        android:background="#2f209e85"/>
 
-</LinearLayout>
+</RelativeLayout>

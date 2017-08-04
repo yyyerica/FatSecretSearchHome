@@ -1,6 +1,7 @@
 package com.example.yyy.jsontest;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 
 import android.graphics.drawable.Drawable;
@@ -13,6 +14,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
+import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +35,9 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class DietFragment extends Fragment {
@@ -46,12 +53,15 @@ public class DietFragment extends Fragment {
 
     RelativeLayout ll;
 
-    int carbohydrate = 0,fat = 0,protein = 0;
+    int carbohydratepercent = 0,fatpercent = 0,proteinpercent = 0,//圆环
+            carbohydrate = 0, fat = 0 , protein = 0;//表格
 
     Button detailBu;
 
     private int screenWidth = 0;
     private int screenHeight = 0;
+
+    final static int REQUESTCODE = 34;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +70,8 @@ public class DietFragment extends Fragment {
         ll = (RelativeLayout)inflater.inflate(R.layout.fragment_diet, container, false);
         init();
 
-        initProgressRing(53,23,42);//圆环
+        getDataformDataBase();
+        initProgressRing();//圆环
 
         initFAB(); //浮动按钮
 
@@ -72,6 +83,10 @@ public class DietFragment extends Fragment {
         detailBu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences sp = getActivity().getSharedPreferences("username", 0);
+                int lasttp = sp.getInt("sharetp", 0);//默认值为0，所有数据为空   （正确值是1234）
+                Bundle bundle = new Bundle();
+                bundle.putInt("tp",lasttp);
                 Intent intent = new Intent(getActivity(),FoodDetailActivity.class);
                 startActivity(intent);
             }
@@ -103,7 +118,7 @@ public class DietFragment extends Fragment {
                 .setPosition(4) //位置
                 .build();
 
-        //((FloatingActionButton.LayoutParams) actionButton.getLayoutParams()).setMargins(0, 400, 30, 0);//偏移
+        ((FloatingActionButton.LayoutParams) actionButton.getLayoutParams()).setMargins(0, 0, 0, 140);//偏移
 
         SubActionButton.Builder itemBuilder = new SubActionButton.Builder(getActivity());
 
@@ -151,7 +166,7 @@ public class DietFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),SearchFoodActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,REQUESTCODE);
             }
         });
 
@@ -172,7 +187,9 @@ public class DietFragment extends Fragment {
                 String state = Environment.getExternalStorageState();
                 if (state.equals(Environment.MEDIA_MOUNTED)) {
                     Intent getImageByCamera = new Intent("android.media.action.IMAGE_CAPTURE");
-                    Uri imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),PICTURE_FILE));
+                    //Uri imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),PICTURE_FILE));
+                    //↑7.0之后改成↓
+                    Uri imageUri = FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext().getPackageName() + ".my.package.name.provider", new File(Environment.getExternalStorageDirectory(),PICTURE_FILE));
                     getImageByCamera.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                     // 这样每次调用相机拍照都会在sd卡根目录生成名为temp.jpg的图片，每次拍照都会覆盖旧的文件。这样的话就不能通过onActivityResult方法的intent参数获取照片数据，可以直接读取文件
                     // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CAREMA
@@ -247,7 +264,7 @@ public class DietFragment extends Fragment {
     // 回调方法，从第二个页面回来的时候会执行这个方法
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PHOTO_REQUEST_GALLERY) {
+        if (requestCode == PHOTO_REQUEST_GALLERY && data != null) {
             //打开相册并选择照片，这个方式选择单张
 // 获取返回的数据，这里是android自定义的Uri地址
             Uri selectedImage = data.getData();
@@ -267,6 +284,24 @@ public class DietFragment extends Fragment {
                     + "/" + PICTURE_FILE);
             String filePath = f.getPath();
             manageimage(filePath);
+
+        } else if(requestCode == REQUESTCODE) { //从SearchFoodActivity返回
+            if(data!=null) {
+                Bundle b=data.getExtras(); //data为B中回传的Intent
+                int returntp = b.getInt("returtp");
+                Food returnfood = (Food)b.getSerializable("returnfood");
+                //存入数据库，发送
+                Service service = new Service();
+                service.postfood(returnfood, "tom",returntp);
+                //储存最后一餐
+                SharedPreferences sp = getActivity().getSharedPreferences("username", 0);
+                //通过Editor对象以键值对<String Key,String Value>存储数据
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putInt("sharetp", returntp);
+                editor.putInt("sharedate",service.getDate());
+                //通过.commit()方法保存数据
+                editor.commit();
+            }
 
         }
     }
@@ -313,19 +348,16 @@ public class DietFragment extends Fragment {
 
 
     //圆环
-    void initProgressRing(int carbohydrate1,int fat1,int protein1) {
+    void initProgressRing() {
         mRoundProgressBar1 = (RoundProgressBar) ll.findViewById(R.id.roundProgressBar1);
         mRoundProgressBar2 = (RoundProgressBar2) ll.findViewById(R.id.roundProgressBar2);
         mRoundProgressBar3 = (RoundProgressBar3) ll.findViewById(R.id.roundProgressBar3);
 
-        carbohydrate = carbohydrate1;
-        fat = fat1;
-        protein = protein1;
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (progress1 < carbohydrate) {
+                while (progress1 < carbohydratepercent) {
                     progress1 += 1;
 
                     mRoundProgressBar1.setProgress(progress1);
@@ -342,7 +374,7 @@ public class DietFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (progress2 < fat) {
+                while (progress2 < fatpercent) {
                     progress2 += 1;
                     mRoundProgressBar2.setProgress(progress2);
 
@@ -358,7 +390,7 @@ public class DietFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (progress3 < protein) {
+                while (progress3 < proteinpercent) {
                     progress3 += 1;
 
                     mRoundProgressBar3.setProgress(progress3);
@@ -372,6 +404,41 @@ public class DietFragment extends Fragment {
             }
         }).start();
     }
+
+    void getDataformDataBase() {
+        SharedPreferences sp = getActivity().getSharedPreferences("username", 0);
+        int lasttp = sp.getInt("sharetp", 0);//默认值为0，所有数据为空   （正确值是1234）
+        int lastdate = sp.getInt("sharedate",0);
+
+        Time time = new Time();
+        time.setToNow(); // 取得系统时间。
+        //Log.e("yearday",time.yearDay+"");
+        if(lastdate<time.yearDay){
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putInt("sharetp", 0);
+        } else {
+            switch (lasttp) {
+                case 0:
+                    carbohydratepercent = 0;
+                    fatpercent = 0;
+                    proteinpercent = 0;
+                    protein = 0;
+                    fat = 0;
+                    carbohydrate = 0;
+                case 1://早
+                    break;
+                case 2://中
+                    break;
+                case 3://晚
+                    break;
+                case 4://加餐
+                    break;
+            }
+        }
+
+
+    }
+
 
 //    public class GetNetWork extends AsyncTask<Void,Void,Void>
 //    {

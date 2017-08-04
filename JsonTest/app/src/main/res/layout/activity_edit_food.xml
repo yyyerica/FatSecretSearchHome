@@ -11,17 +11,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp">
-        <EditText
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/searchEditText"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/corners"
+            android:layout_weight="1">
+
+            <Button
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/searchbutton"
+                android:layout_gravity="center_vertical|left"
+                android:layout_margin="10dp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/searchEditText"
+                android:background="@null"
+                android:layout_gravity="center_vertical"
+                android:textCursorDrawable="@color/cursorcolor"/>
+
+        </LinearLayout>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/searchButton"
-            android:layout_weight="5"/>
+            android:layout_weight="6"
+            android:textSize="17sp"
+            android:textColor="#98209e85"
+            android:text="取消"
+            android:background="@null"
+            android:id="@+id/cancel_action"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="5dp"/>
     </LinearLayout>
 
     <TextView
@@ -44,6 +71,9 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/searchListView"/>
+        android:id="@+id/searchListView"
+        android:layout_marginTop="10dp"
+        android:background="#4deaeaea"
+        android:padding="10dp"/>
 
 </LinearLayout>

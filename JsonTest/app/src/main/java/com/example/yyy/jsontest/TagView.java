@@ -37,58 +37,60 @@ public class TagView extends FrameLayout {
 //        imageView.setImageResource(id);
 //    }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                break;
-            case MotionEvent.ACTION_MOVE:
-                break;
-            case MotionEvent.ACTION_UP:
-                Log.e("TagView","tabtabtabtab");
-                showSingleChoiceDialog();
-                break;
-        }
-        return true;
-    }
-    //声明一个AlertDialog构造器
-    private AlertDialog.Builder builder;
-    final ChoiceOnClickListener choiceListener =
-            new ChoiceOnClickListener();
-    private void showSingleChoiceDialog() {
-        builder=new AlertDialog.Builder(context);
-        builder.setIcon(R.mipmap.ic_launcher);
-        builder.setTitle("lalala")
-                .setPositiveButton("删除",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialoginterface, int i) {
-                                setVisibility(GONE);
-                            }
-                        }).show();
-
-        /**
-         * 设置内容区域为单选列表项
-         */
-
-        builder.setSingleChoiceItems(items, 0, choiceListener);
-
-        builder.setCancelable(true);
-        dialog = builder.create();
-        dialog.show();
-
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                Log.e("TagView","tabtabtabtab");
+//                showSingleChoiceDialog();
+//                break;
+//        }
+//        return true;
+//    }
 
 
-    private class ChoiceOnClickListener implements DialogInterface.OnClickListener {
+//    //声明一个AlertDialog构造器
+//    private AlertDialog.Builder builder;
+//    final ChoiceOnClickListener choiceListener =
+//            new ChoiceOnClickListener();
+//    private void showSingleChoiceDialog() {
+//        builder=new AlertDialog.Builder(context);
+//        builder.setIcon(R.mipmap.ic_launcher);
+//        builder.setTitle("lalala")
+//                .setPositiveButton("删除",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialoginterface, int i) {
+//                                setVisibility(GONE);
+//                            }
+//                        }).show();
+//
+//        /**
+//         * 设置内容区域为单选列表项
+//         */
+//
+//        builder.setSingleChoiceItems(items, 0, choiceListener);
+//
+//        builder.setCancelable(true);
+//        dialog = builder.create();
+//        dialog.show();
 
-        private int which = 0;
-        @Override
-        public void onClick(DialogInterface dialogInterface, int which) {
-            this.which = which;
-            FoodNameText.setText(items[which]);
-            dialog.dismiss();
-        }
-    }
+//    }
+
+
+//    private class ChoiceOnClickListener implements DialogInterface.OnClickListener {
+//
+//        private int which = 0;
+//        @Override
+//        public void onClick(DialogInterface dialogInterface, int which) {
+//            this.which = which;
+//            FoodNameText.setText(items[which]);
+//            dialog.dismiss();
+//        }
+//    }
 
 
 }

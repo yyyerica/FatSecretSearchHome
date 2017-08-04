@@ -28,20 +28,26 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
                 android:layout_gravity="left"
                 android:text="营养成分"
+                android:layout_centerVertical="true"
                 android:textColor="#584f60"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:layout_alignParentStart="true" />
 
             <Button
                 android:id="@+id/detailsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_gravity="end"
-                android:text="食物详情" />
+                android:text="食物详情"
+                android:textColor="#5e5e5e"
+                android:background="@null"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="25dp"/>
         </RelativeLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

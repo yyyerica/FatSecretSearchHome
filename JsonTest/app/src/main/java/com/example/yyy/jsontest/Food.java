@@ -2,6 +2,7 @@ package com.example.yyy.jsontest;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.format.Time;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,21 +23,26 @@ public class Food implements Serializable {
     int protein;//1.09
     int carbs;  //22.84
     int amount; //g
+    int id;
     String description;// Fat: 0.33g | Carbs: 22.84g | Protein: 1.09g
 
-    public Food(String Name,int heat,int fat,int protein,int carbs,String description) {
+    //int tp;  //4-9早 10-15午 16-21晚 22-3加餐
+
+    public Food(String Name,int heat,int fat,int carbs,int protein,String description, int amount, int id) {
         this.carbs = carbs;
         this.description = description;
         this.fat = fat;
         this.heat = heat;
         this.Name = Name;
         this.protein = protein;
+        this.amount = amount;
+        this.id = id;
     }
 
     public static Food JsontoFood(JSONObject object) {
         String food_description = object.optString("food_description");
         String food_name = object.optString("food_name");
-
+        int ids = object.optInt("food_id");
         String des = food_description.split("-")[1];//description
 
         String[] item = des.split("\\|");//Calories,Fat,Carbs
@@ -46,7 +52,7 @@ public class Food implements Serializable {
         int carbs = getNumber(item[2]);
         int protein = getNumber(item[3]);
 
-        return new Food(food_name,heat,fat,protein,carbs,food_description);
+        return new Food(food_name,heat,fat,protein,carbs,food_description,100,ids);
     }
 
     public String getName() {
@@ -112,4 +118,15 @@ public class Food implements Serializable {
         int after=Integer.valueOf(m.replaceAll("").trim());
         return after;
     }
+
+    public void putid(int id) {
+        this.id = id;
+    }
+
+    public int getid() {
+        return id;
+    }
+
+
+
 }

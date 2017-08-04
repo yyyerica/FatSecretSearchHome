@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -34,6 +35,7 @@ public class ShowPicActivity extends AppCompatActivity {
     //TagView tagView;
     ArrayList<Food> preList,postList;
     ArrayList<TagView> viewlist;
+    String path;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +56,7 @@ public class ShowPicActivity extends AppCompatActivity {
 
         if (bundle != null) {
             //album
-            String path = (String) bundle.get("path");
+            path = (String) bundle.get("path");
             int degree = (int) bundle.get("degree");
             if (path != null) {
                 if (degree != 0) {
@@ -98,8 +100,7 @@ public class ShowPicActivity extends AppCompatActivity {
 * 设置控件所在的位置YY，并且不改变宽高，
 * XY为绝对位置
 */
-    public static void setLayout(View view,int x,int y)
-    {
+    public static void setLayout(View view,int x,int y) {
         ViewGroup.MarginLayoutParams margin=new ViewGroup.MarginLayoutParams(view.getLayoutParams());
 //        margin.setMargins(x,y, x+margin.width, y+margin.height);
         margin.setMargins(x,y, 0, 0);//cnmlgb
@@ -119,10 +120,10 @@ public class ShowPicActivity extends AppCompatActivity {
             preList = new ArrayList<>();
             postList = new ArrayList<>();
             viewlist = new ArrayList<>();
-            preList.add(new Food("foodnameDemo0",1,2,3,4,"desstring0"));
-            preList.add(new Food("foodnameDemo1",1,2,3,4,"desstring1"));
-            preList.add(new Food("foodnameDemo2",1,2,3,4,"desstring2"));
-            preList.add(new Food("foodnameDemo3",1,2,3,4,"desstring3"));
+            preList.add(new Food("foodnameDemo0",100,2,3,4,"desstring0",100,34));
+            preList.add(new Food("foodnameDemo1",300,2,3,4,"desstring1",100,35));
+            preList.add(new Food("foodnameDemo2",500,2,3,4,"desstring2",100,36));
+            //preList.add(new Food("foodnameDemo3",1,2,3,4,"desstring3"));
         }
 
         @Override
@@ -146,13 +147,15 @@ public class ShowPicActivity extends AppCompatActivity {
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return "ok";
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+            Service service = new Service();
+            service.postPic(new File(path));
 
+            return "ok";
         }
 
         /**
@@ -169,11 +172,10 @@ public class ShowPicActivity extends AppCompatActivity {
                 TagView tagView = new TagView(ShowPicActivity.this, preList.get(i));
                 viewlist.add(tagView);//用以确认键作判断
 
-                picframeLayout.addView(tagView,tagparams);
-                int[] location = new  int[2] ;//获得当前图片的位置（左上角）
+                picframeLayout.addView(tagView, tagparams);
+                int[] location = new int[2];//获得当前图片的位置（左上角）
                 imageView.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
                 setLayout(tagView,location[0]+i*300,location[1]+i*300);
-
             }
             affirmButton.setVisibility(View.VISIBLE);
         }

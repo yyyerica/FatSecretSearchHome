@@ -84,7 +84,7 @@ public class RoundProgressBar2 extends View {
 		
 		Log.e("log", centre + "");
 
-		paint.setStrokeWidth(0); 
+		paint.setStrokeWidth(0);
 		paint.setColor(textColor);
 		paint.setTextSize(textSize);
 		paint.setTypeface(Typeface.DEFAULT_BOLD);
@@ -93,12 +93,10 @@ public class RoundProgressBar2 extends View {
 		float textWidth1 = paint.measureText("脂肪");
 		float textWidth2 = paint.measureText(percent + "%");
 		
-		if(textIsDisplayable && percent != 0 && style == STROKE){
+		if(textIsDisplayable  && style == STROKE){
 			canvas.drawText(text , centre - textWidth1 / 2, centre - textSize/2, paint);
 			canvas.drawText(percent + "%", centre - textWidth2 / 2, centre + textSize, paint);
 		}
-		
-		
 
 		paint.setStrokeWidth(roundWidth);
 		paint.setColor(roundProgressColor);

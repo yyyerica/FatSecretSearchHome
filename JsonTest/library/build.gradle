@@ -20,12 +20,19 @@ android {
 }
 
 repositories {
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven {
+        url "https://jitpack.io"
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+//    compile 'com.github.coyarzun89:fabtransitionactivity:0.2.0'
+//    compile ('com.github.ozodrukh:CircularReveal:2.0.1@aar') {
+//        transitive = true;
+//    }
 }
 
 // apply from: '../gradle-mvn-push.gradle'

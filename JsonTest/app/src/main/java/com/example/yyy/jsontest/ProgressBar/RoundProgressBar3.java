@@ -93,7 +93,7 @@ public class RoundProgressBar3 extends View {
 		float textWidth1 = paint.measureText("碳水化合物");
 		float textWidth2 = paint.measureText(percent + "%");
 		
-		if(textIsDisplayable && percent != 0 && style == STROKE){
+		if(textIsDisplayable  && style == STROKE){
 			canvas.drawText(text , centre - textWidth1 / 2, centre - textSize/2, paint);
 			canvas.drawText(percent + "%", centre - textWidth2 / 2, centre + textSize, paint);
 		}
